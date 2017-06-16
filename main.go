@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"runtime"
+	"testing"
 
 	"github.com/gin-gonic/gin"
 )
@@ -10,6 +11,7 @@ import (
 func main() {
 	ConfigRuntime()
 	StartWorkers()
+
 	StartGin()
 }
 
@@ -20,6 +22,8 @@ func ConfigRuntime() {
 }
 
 func StartWorkers() {
+	var t *testing.T
+	go Counter(t)
 	go statsWorker()
 }
 
