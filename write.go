@@ -16,7 +16,7 @@ func check(e error) {
 func WriteTxt(text string) {
 
 	d1 := []byte(text)
-	err := ioutil.WriteFile("C:/Users/Desktop/go/src/JPRO/tmp/Raw.txt", d1, 0644)
+	err := ioutil.WriteFile(FileLoc+"/Raw.txt", d1, 0644)
 	check(err)
 }
 
@@ -24,8 +24,7 @@ func WriteRep(start string, end string, typ string) { // typ means the type (log
 
 	var temp string
 
-	data, error := ioutil.ReadFile(FileLoc + "/Rep.log")
-	check(error)
+	data, _ := ioutil.ReadFile(FileLoc + "/Rep.log")
 
 	temp += string(data) + "\n"
 	if typ == "log" {

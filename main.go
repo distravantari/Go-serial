@@ -13,7 +13,7 @@ import (
 )
 
 var (
-	FileLoc    = "C:/Users/Desktop/go/src/JPRO/tmp"
+	FileLoc    = "C:/Users/Desktop/Desktop/tmp"
 	MAX        = 200
 	TimeFormat = "2006-01-02 15:04:05"
 	StartTime  = time.Now().Format(TimeFormat)
@@ -67,8 +67,8 @@ func StartGin() {
 	gin.SetMode(gin.ReleaseMode)
 
 	router := gin.New()
-	router.LoadHTMLGlob("resources/*.templ.html")
-	router.Static("/static", "resources/static")
+	// router.LoadHTMLGlob("resources/*.templ.html")
+	// router.Static("/static", "resources/static")
 
 	router.Run(":80")
 }
