@@ -1,6 +1,7 @@
 package main
 
 import (
+	"strconv"
 	"strings"
 	"testing"
 	"time"
@@ -33,6 +34,9 @@ func Counter(t *testing.T) {
 	go func() {
 		buf := make([]byte, 128)
 		var readCount int
+		var temp string
+
+		maxCounter := 1
 		for {
 			n, err := s2.Read(buf)
 			if err != nil {
@@ -43,7 +47,61 @@ func Counter(t *testing.T) {
 			weight := fmt.Sprintf("%s ", buf[:n])
 			if strings.ContainsAny(weight, "+") {
 				weight = strings.Trim(weight, "+")
-				fmt.Print(weight + " ")
+				// fmt.Print(weight + " ")
+				EndTime = time.Now().Format(TimeFormat)
+				temp += EndTime + ",		" + weight + "\n"
+				WriteTxt(temp)
+
+				intWeight, err := strconv.Atoi(strings.Replace(weight, " ", "", -1)) //convert weight to int and remove white space
+				if err != nil {
+					fmt.Println("hell no, ", err)
+				}
+				maxCounter = len(AllTempMax)
+				fmt.Println(weight, ": weight in int: ", intWeight, "counter: ", maxCounter)
+				if intWeight >= MAX {
+					tempMax := &ExcelTable{
+						No:    strconv.Itoa(maxCounter),
+						Jam:   EndTime,
+						Max:   strconv.Itoa(intWeight),
+						Lama:  "test",
+						Awal:  "test",
+						Akhir: "test",
+					}
+					TempMaxs = append(TempMaxs, *tempMax)
+				} else {
+					if TempMaxs != nil {
+						var max int
+						var awal time.Time
+						var akhir time.Time
+						var timeDef string
+
+						for i, tempMax := range TempMaxs {
+							time, _ := time.Parse(TimeFormat, tempMax.Jam)
+							tMax, _ := strconv.Atoi(tempMax.Max)
+							if tMax > max {
+								max = tMax
+							}
+							if i == 0 {
+								awal = time
+							}
+							if i == (len(TempMaxs) - 1) {
+								akhir = time
+							}
+							ttd := awal.Sub(akhir)
+							timeDef = fmt.Sprintf("%.0f:%.0f:%.0f", ttd.Hours()*-1, ttd.Minutes()*-1, ttd.Seconds()*-1)
+						}
+						passTemp := &ExcelTable{
+							No:    strconv.Itoa(maxCounter),
+							Jam:   TempMaxs[0].Jam,
+							Max:   strconv.Itoa(max),
+							Lama:  timeDef,
+							Awal:  awal.Format("15:04:05"),
+							Akhir: akhir.Format("15:04:05"),
+						}
+						AllTempMax = append(AllTempMax, *passTemp)
+						TempMaxs = nil
+					}
+				}
 			}
 
 			select {
