@@ -55,7 +55,8 @@ func Zipit() {
 	hour := strconv.Itoa(time.Now().Hour())
 	min := strconv.Itoa(time.Now().Minute())
 	sec := strconv.Itoa(time.Now().Second())
-	output := "backup" + tie + "T" + hour + "." + min + "." + sec + ".zip"
+	// output := "backup" + tie + "T" + hour + "." + min + "." + sec + ".zip"
+	output := "backup" + tie + "T" + hour + "." + min + "." + sec
 
 	err := ZipFiles(output, files)
 

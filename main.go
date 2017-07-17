@@ -15,8 +15,8 @@ import (
 )
 
 // how to build the application:
-// DEVELOPMENT: main-res.syso main.rc && go build -ldflags="-H windowsgui" -i
-// PRODUCTION: main-res.syso main.rc && go build -i
+// PRODUCTION: main-res.syso main.rc && go build -ldflags="-H windowsgui" -i
+// DEVELOPMENT: main-res.syso main.rc && go build -i
 
 func main() {
 	UI()
@@ -51,7 +51,7 @@ func WriteAll() {
 		messages <- 1
 	}()
 	go func() {
-		time.Sleep(time.Second * 1)
+		time.Sleep(time.Second * 2)
 		modules.WriteRep(modules.StartTime, modules.EndTime, "log")
 		if len(modules.AllTempMax) > 0 {
 			modules.WriteMax(modules.AllTempMax)
@@ -63,7 +63,7 @@ func WriteAll() {
 			fmt.Println(i)
 		}
 	}()
-	time.Sleep(time.Second * 2)
+	time.Sleep(time.Second * 3)
 }
 
 func ConfigRuntime() {
