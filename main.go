@@ -2,7 +2,6 @@ package main
 
 import (
 	"JPRO/modules"
-	"JPRO/zipping"
 	"fmt"
 	"os"
 	"os/signal"
@@ -45,17 +44,17 @@ func OnClose() {
 
 func WriteAll() {
 	messages := make(chan int)
-	go func() {
-		time.Sleep(time.Second * 1)
-		zipping.Zipit()
-		messages <- 1
-	}()
+	// go func() {
+	// 	time.Sleep(time.Second * 1)
+	// 	modules.Zipit()
+	// 	messages <- 1
+	// }()
 	go func() {
 		time.Sleep(time.Second * 2)
-		modules.WriteRep(modules.StartTime, modules.EndTime, "log")
-		if len(modules.AllTempMax) > 0 {
-			modules.WriteMax(modules.AllTempMax)
-		}
+		// modules.WriteRep(modules.StartTime, modules.EndTime, "log")
+		// if len(modules.AllTempMax) > 0 {
+		// 	modules.WriteMax(modules.AllTempMax)
+		// }
 		messages <- 2
 	}()
 	go func() {

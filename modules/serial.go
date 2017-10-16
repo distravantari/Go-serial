@@ -1,6 +1,8 @@
 package modules
 
 import (
+	"log"
+	"regexp"
 	"strconv"
 	"strings"
 	"testing"
@@ -12,7 +14,8 @@ import (
 )
 
 func Counter(t *testing.T) {
-	port0 := "COM2"
+	WriteTxt()
+	port0 := "COM4"
 	port1 := "COM1"
 	if port0 == "" || port1 == "" {
 		t.Skip("Skipping test because PORT0 or PORT1 environment variable is not set")
@@ -45,12 +48,19 @@ func Counter(t *testing.T) {
 			readCount++
 			// fmt.Printf("Read %v %v bytes: % 02x %s", readCount, n, buf[:n], buf[:n])
 			weight := fmt.Sprintf("%s ", buf[:n])
+			//fmt.Println("testtt", weight)
 			if strings.ContainsAny(weight, "+") {
-				weight = strings.Trim(weight, "+")
+				//weight = strings.Trim(weight, "+>;<=") Distra change this on 25th Sept 2017 (cannot trim a "=")
+				reg, err := regexp.Compile("[^0-9]+")
+				if err != nil {
+					log.Fatal(err)
+				}
+				weight := reg.ReplaceAllString(weight, "")
+
 				// fmt.Print(weight + " ")
 				EndTime = time.Now().Format(TimeFormat)
 				temp += EndTime + ",		" + weight + "\r\n"
-				WriteTxt(temp)
+				WriteTempTxt(temp)
 
 				intWeight, err := strconv.Atoi(strings.Replace(weight, " ", "", -1)) //convert weight to int and remove white space
 				if err != nil {
@@ -91,7 +101,7 @@ func Counter(t *testing.T) {
 							timeDef = fmt.Sprintf("%.0f:%.0f:%.0f", ttd.Hours()*-1, ttd.Minutes()*-1, ttd.Seconds()*-1)
 						}
 						passTemp := &ExcelTable{
-							No:    strconv.Itoa(maxCounter),
+							No:    strconv.Itoa(maxCounter + 1),
 							Jam:   TempMaxs[0].Jam,
 							Max:   strconv.Itoa(max),
 							Lama:  timeDef,
@@ -99,11 +109,14 @@ func Counter(t *testing.T) {
 							Akhir: akhir.Format("15:04:05"),
 						}
 						AllTempMax = append(AllTempMax, *passTemp)
+						directWriteAllTempMax = append(directWriteAllTempMax, *passTemp)
+						WriteMax(directWriteAllTempMax)
+						directWriteAllTempMax = nil
+						Zipit()
 						TempMaxs = nil
 					}
 				}
 			}
-
 			select {
 			case <-ch:
 				ch <- readCount

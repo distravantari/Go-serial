@@ -15,11 +15,29 @@ func check(e error) {
 	}
 }
 
-func WriteTxt(text string) {
-
+func WriteTempTxt(text string) {
 	d1 := []byte(text)
-	err := ioutil.WriteFile(FileLoc+"/Raw.txt", d1, 0644)
+	err := ioutil.WriteFile(FileLoc+"/Temp.txt", d1, 0644)
 	check(err)
+}
+
+func WriteTxt() {
+	var temp string
+	dataf, err := ioutil.ReadFile(FileLoc + "/Raw.txt")
+	if err != nil {
+		data, _ := ioutil.ReadFile(FileLoc + "/Temp.txt")
+		temp = string(data)
+		d1 := []byte(temp)
+		err = ioutil.WriteFile(FileLoc+"/Raw.txt", d1, 0644)
+		check(err)
+	} else {
+		data, _ := ioutil.ReadFile(FileLoc + "/Temp.txt")
+		temp = string(dataf) + string(data)
+		d1 := []byte(temp)
+		err := ioutil.WriteFile(FileLoc+"/Raw.txt", d1, 0644)
+		check(err)
+	}
+
 }
 
 func WriteRep(start string, end string, typ string) { // typ means the type (log/txt/excel)

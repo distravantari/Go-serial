@@ -1,12 +1,10 @@
-package zipping
+package modules
 
 import (
-	"JPRO/modules"
 	"fmt"
 	"io"
 	"os"
 	"path/filepath"
-	"strconv"
 	"time"
 
 	"github.com/alexmullins/zip"
@@ -50,13 +48,13 @@ func Unzip(archive, target string) error {
 }
 
 func Zipit() {
-	files := []string{modules.FileLoc + "/Raw.txt", modules.FileLoc + "/Rep.log", modules.FileLoc + "/Max.xlsx"}
+	files := []string{FileLoc + "/Temp.txt", FileLoc + "/Max.xlsx", FileLoc + "/Raw.txt"}
 	tie := time.Now().Format("2006-01-02")
-	hour := strconv.Itoa(time.Now().Hour())
-	min := strconv.Itoa(time.Now().Minute())
-	sec := strconv.Itoa(time.Now().Second())
-	// output := "backup" + tie + "T" + hour + "." + min + "." + sec + ".zip"
-	output := "backup" + tie + "T" + hour + "." + min + "." + sec
+	// hour := strconv.Itoa(time.Now().Hour())
+	// min := strconv.Itoa(time.Now().Minute())
+	// sec := strconv.Itoa(time.Now().Second())
+	output := "D:/laporan/backup/backup" + tie
+	// output := "tmp/backup" + tie + "T" + hour + "." + min + "." + sec
 
 	err := ZipFiles(output, files)
 

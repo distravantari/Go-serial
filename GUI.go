@@ -1,6 +1,7 @@
 package main
 
 import (
+	"JPRO/modules"
 	"log"
 	"time"
 
@@ -11,7 +12,6 @@ import (
 var msg = "Server Start at: " + time.Now().Format("Mon Jan _2 15:04:05 2006")
 
 func UI() {
-
 	var mw *walk.MainWindow
 	if err := (MainWindow{
 		AssignTo: &mw,
@@ -28,7 +28,8 @@ func UI() {
 			Action{
 				Text: "E&xit",
 				OnTriggered: func() {
-					WriteAll()
+					// WriteAll()
+					modules.WriteRep(modules.StartTime, modules.EndTime, "log")
 					mw.Close()
 				},
 			},
