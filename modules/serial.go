@@ -62,17 +62,19 @@ func Counter(t *testing.T) {
 				temp += EndTime + ",		" + weight + "\r\n"
 				WriteTempTxt(temp)
 
-				intWeight, err := strconv.Atoi(strings.Replace(weight, " ", "", -1)) //convert weight to int and remove white space
+				intWeight, err := strconv.Atoi(strings.Replace(weight, " ", "", -1)) //convert weight to int and remove white spac
+
 				if err != nil {
 					fmt.Println(err)
 				}
 				maxCounter = len(AllTempMax)
-				fmt.Println(weight, ": weight in int: ", intWeight, "counter: ", maxCounter)
+				//intweight need to be trim "3 angka dibelakang", because roght now the out put always contain 1 and 8
+				fmt.Println(weight, ": weight in int: ", intWeight/1000, "counter: ", maxCounter)
 				if intWeight >= MAX {
 					tempMax := &ExcelTable{
 						No:    strconv.Itoa(maxCounter),
 						Jam:   EndTime,
-						Max:   strconv.Itoa(intWeight),
+						Max:   strconv.Itoa(intWeight / 1000),
 						Lama:  "test",
 						Awal:  "test",
 						Akhir: "test",
@@ -127,7 +129,7 @@ func Counter(t *testing.T) {
 	}()
 
 	if _, err = s1.Write([]byte(" ")); err != nil {
-		fmt.Println(err)
+		fmt.Println("LINE 130", err)
 	}
 	if _, err = s1.Write([]byte(" ")); err != nil {
 		fmt.Println(err)
