@@ -61,13 +61,10 @@ func Counter(t *testing.T) {
 				EndTime = time.Now().Format(TimeFormat)
 				temp += EndTime + ",		" + weight + "\r\n"
 				WriteTempTxt(temp)
-				
-				// weight = strings.Replace(weight, " ", "", -1) //remove white space
-				// var divider int
-				// weight = weight[:6] //causing forced error
-				// divider = 10 * (len(weight) - 6) //ambil 6 karakter dari depan
 
-				intWeight, err := strconv.Atoi(strings.Replace(weight, " ", "", -1)) //convert weight to int
+				weight = weight[:6]
+
+				intWeight, err := strconv.Atoi(weight, " ", "", -1) //convert weight to int
 
 				if err != nil {
 					fmt.Println(err)
@@ -79,7 +76,7 @@ func Counter(t *testing.T) {
 					tempMax := &ExcelTable{
 						No:    strconv.Itoa(maxCounter),
 						Jam:   EndTime,
-						Max:   strconv.Itoa(intWeight / 1000),
+						Max:   strconv.Itoa(intWeight),
 						Lama:  "test",
 						Awal:  "test",
 						Akhir: "test",
