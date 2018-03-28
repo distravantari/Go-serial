@@ -61,8 +61,8 @@ func Counter(t *testing.T) {
 				EndTime = time.Now().Format(TimeFormat)
 				temp += EndTime + ",		" + weight + "\r\n"
 				WriteTempTxt(temp)
-
-				intWeight, err := strconv.Atoi(weight) //convert weight to int
+				weight = strings.Replace(weight, " ", "", -1)
+				intWeight, err2 := strconv.Atoi(weight) //convert weight to int
 
 				if len(weight) == 8 {
 					intWeight = intWeight / 100
@@ -72,10 +72,10 @@ func Counter(t *testing.T) {
 					//pembacaan 9 angka
 				} else {
 					intWeight = intWeight / (10 * (len(weight) - 6))
-					//pembacaan error, abaikan
+					//pembacaan error, lebih dari 9 angka
 				}
 
-				if err != nil {
+				if err2 != nil {
 					fmt.Println(err)
 				}
 				maxCounter = len(AllTempMax)
