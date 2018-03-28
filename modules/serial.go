@@ -62,9 +62,18 @@ func Counter(t *testing.T) {
 				temp += EndTime + ",		" + weight + "\r\n"
 				WriteTempTxt(temp)
 
-				weight = weight[:6]
+				intWeight, err := strconv.Atoi(weight) //convert weight to int
 
-				intWeight, err := strconv.Atoi(weight, " ", "", -1) //convert weight to int
+				if len(weight) == 8 {
+					intWeight = intWeight / 100
+					//pembacaan 8 angka
+				} else if len(weight) == 9 {
+					intWeight = intWeight / 1000
+					//pembacaan 9 angka
+				} else {
+					continue
+					//pembacaan error, abaikan
+				}
 
 				if err != nil {
 					fmt.Println(err)
