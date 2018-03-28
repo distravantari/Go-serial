@@ -71,7 +71,7 @@ func Counter(t *testing.T) {
 					intWeight = intWeight / 1000
 					//pembacaan 9 angka
 				} else {
-					continue
+					intWeight = intWeight / (10 * (len(weight) - 6))
 					//pembacaan error, abaikan
 				}
 
