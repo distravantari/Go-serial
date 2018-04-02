@@ -56,12 +56,12 @@ func Counter(t *testing.T) {
 					log.Fatal(err)
 				}
 				weight := reg.ReplaceAllString(weight, "")
-
+				weight := strings.Replace(weight, " ", "", -1)
 				// fmt.Print(weight + " ")
 				EndTime = time.Now().Format(TimeFormat)
 				temp += EndTime + ",		" + weight + "\r\n"
 				WriteTempTxt(temp)
-				intWeight, err := strconv.Atoi(strings.Replace(weight, " ", "", -1)) //convert weight to int
+				intWeight, err := strconv.Atoi(weight) //convert weight to int
 
 				if err != nil {
 					fmt.Println(err)
@@ -69,7 +69,7 @@ func Counter(t *testing.T) {
 				maxCounter = len(AllTempMax)
 				//intweight need to be trim "3 angka dibelakang", because roght now the out put always contain 1 and 8
 				// fmt.Println(weight, ": weight in int: ", intWeight/1000, "counter: ", maxCounter)
-				if intWeight >= MAX {
+				if intWeight >= (MAX - 250) {
 					tempMax := &ExcelTable{
 						No:    strconv.Itoa(maxCounter),
 						Jam:   EndTime,
@@ -101,20 +101,23 @@ func Counter(t *testing.T) {
 							ttd := awal.Sub(akhir)
 							timeDef = fmt.Sprintf("%.0f:%.0f:%.0f", ttd.Hours()*-1, ttd.Minutes()*-1, ttd.Seconds()*-1)
 						}
-						passTemp := &ExcelTable{
-							No:    strconv.Itoa(maxCounter + 1),
-							Jam:   TempMaxs[0].Jam,
-							Max:   strconv.Itoa(max),
-							Lama:  timeDef,
-							Awal:  awal.Format("15:04:05"),
-							Akhir: akhir.Format("15:04:05"),
+
+						if max >= MAX {
+							passTemp := &ExcelTable{
+								No:    strconv.Itoa(maxCounter + 1),
+								Jam:   TempMaxs[0].Jam,
+								Max:   strconv.Itoa(max),
+								Lama:  timeDef,
+								Awal:  awal.Format("15:04:05"),
+								Akhir: akhir.Format("15:04:05"),
+							}
+							AllTempMax = append(AllTempMax, *passTemp)
+							directWriteAllTempMax = append(directWriteAllTempMax, *passTemp)
+							WriteMax(directWriteAllTempMax)
+							directWriteAllTempMax = nil
+							Zipit()
+							TempMaxs = nil
 						}
-						AllTempMax = append(AllTempMax, *passTemp)
-						directWriteAllTempMax = append(directWriteAllTempMax, *passTemp)
-						WriteMax(directWriteAllTempMax)
-						directWriteAllTempMax = nil
-						Zipit()
-						TempMaxs = nil
 					}
 				}
 			}
