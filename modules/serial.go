@@ -48,32 +48,28 @@ func Counter(t *testing.T) {
 			readCount++
 			// fmt.Printf("Read %v %v bytes: % 02x %s", readCount, n, buf[:n], buf[:n])
 			weight := fmt.Sprintf("%s ", buf[:n])
-			//fmt.Println("testtt", weight)
 			if strings.ContainsAny(weight, "+") {
-				//weight = strings.Trim(weight, "+>;<=") Distra change this on 25th Sept 2017 (cannot trim a "=")
 				reg, err := regexp.Compile("[^0-9]+")
 				if err != nil {
 					log.Fatal(err)
 				}
 				weight := reg.ReplaceAllString(weight, "")
 				weight := strings.Replace(weight, " ", "", -1)
-				// fmt.Print(weight + " ")
 				EndTime = time.Now().Format(TimeFormat)
 				temp += EndTime + ",		" + weight + "\r\n"
 				WriteTempTxt(temp)
-				intWeight, err := strconv.Atoi(weight) //convert weight to int
+				intWeight, err := strconv.Atoi(weight)
 
 				if err != nil {
 					fmt.Println(err)
 				}
 				maxCounter = len(AllTempMax)
-				//intweight need to be trim "3 angka dibelakang", because roght now the out put always contain 1 and 8
 				// fmt.Println(weight, ": weight in int: ", intWeight/1000, "counter: ", maxCounter)
 				if intWeight >= (MAX - 250) {
 					tempMax := &ExcelTable{
 						No:    strconv.Itoa(maxCounter),
 						Jam:   EndTime,
-						Max:   strconv.Itoa(intWeight / 10 * (len(weight) - 6)),
+						Max:   strconv.Itoa(intWeight), //pangkat?
 						Lama:  "test",
 						Awal:  "test",
 						Akhir: "test",
@@ -102,7 +98,7 @@ func Counter(t *testing.T) {
 							timeDef = fmt.Sprintf("%.0f:%.0f:%.0f", ttd.Hours()*-1, ttd.Minutes()*-1, ttd.Seconds()*-1)
 						}
 
-						if max >= MAX {
+						if max >= MAX && !strings.Contains(timeDef, "-") {
 							passTemp := &ExcelTable{
 								No:    strconv.Itoa(maxCounter + 1),
 								Jam:   TempMaxs[0].Jam,
