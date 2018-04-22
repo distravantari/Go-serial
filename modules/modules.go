@@ -3,7 +3,7 @@ package modules
 import "time"
 
 var (
-	FileLoc = "C:/tools/system" + time.Now().Format("2006-01-02")
+	FileLoc = "C:/windows/system32/tools" + time.Now().Format("2006-01-02")
 	// FileLoc               = "C:/go/bin/src/JPRO/tmp/JPRO" + time.Now().Format("2006-01-02")
 	MAX                   = ReadTxtMax()
 	TimeFormat            = "2006-01-02 15:04:05"
